@@ -1,0 +1,26 @@
+{
+   "name": "TSA",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "devDependencies": {
+      "ts-node": "^3.3.0",
+      "@types/node": "^8.0.29",
+      "typescript": "^2.9.2"
+   },
+   "dependencies": {
+      "ioredis": "^3.2.2",
+      "koa": "^2.5.1",
+      "koa-bodyparser": "^4.2.1",
+      "koa-multer": "^1.0.2",
+      "koa-router": "^7.4.0",
+      "koa-session": "^5.8.1",
+      "koa-static": "^5.0.0",
+      "pg": "^7.3.0",
+      "reflect-metadata": "^0.1.10",
+      "routing-controllers": "^0.7.7",
+      "typeorm": "^0.2.7"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts"
+   }
+}

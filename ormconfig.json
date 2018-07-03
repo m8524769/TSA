@@ -1,0 +1,24 @@
+{
+    "type": "postgres",
+    "host": "rm-bp1984h9518re47l9uo.pg.rds.aliyuncs.com",
+    "port": 3432,
+    "username": "zhd",
+    "password": "Zhd_0825",
+    "database": "zhdb",
+    "synchronize": true,
+    "logging": false,
+    "entities": [
+        "src/entity/**/*.ts"
+    ],
+    "migrations": [
+        "src/migration/**/*.ts"
+    ],
+    "subscribers": [
+        "src/subscriber/**/*.ts"
+    ],
+    "cli": {
+        "entitiesDir": "src/entity",
+        "migrationsDir": "src/migration",
+        "subscribersDir": "src/subscriber"
+    }
+}
