@@ -5,6 +5,7 @@ import * as Router from "koa-router";
 import * as serve from "koa-static";
 import * as session from "koa-session";
 import * as bodyParser from "koa-bodyparser";
+import { AppRoutes } from "./routes";
 
 createConnection().then(async connection => {
 
@@ -25,13 +26,14 @@ createConnection().then(async connection => {
 
     // Router: Use /api/<routerName> to connect back-end
     const router = new Router();
-    const fs = require('fs');
 
-    let controllers = fs.readdirSync(`${__dirname}/controller`);
-    controllers.forEach(name => {
-        let eachRouter = require(`./controller/${name}`)();
-        router.use(`/api/${name}`, eachRouter.routes(), eachRouter.allowedMethods());
-        console.log(`Controller ${name}: \tLoaded`);
+    AppRoutes.forEach(route => {
+        let controller = new route.controller();
+        router.use(`/api/${route.path}`,
+            controller.router.routes(),
+            controller.router.allowedMethods()
+        );
+        console.log(`${route.path.toUpperCase()} Controller: \tLoaded`);
     })
     app.use(router.routes()).use(router.allowedMethods());
 
