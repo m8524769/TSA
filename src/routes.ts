@@ -1,13 +1,13 @@
-import { UserController } from './controller/UserController';
-import { ArticleController } from './controller/ArticleController';
+import { UserController } from "./controller/user.controller";
+import { ArticleController } from "./controller/article.controller";
 
 export const AppRoutes = [
     {
-        path: 'user',
-        controller: UserController
+        path: "user",
+        controller: UserController,
     },
     {
-        path: 'article',
-        controller: ArticleController
-    }
-]
+        path: "article",
+        controller: ArticleController,
+    },
+];

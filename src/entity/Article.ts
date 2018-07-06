@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from "typeorm";
 import { User } from "../entity/User";
 
 @Entity()
@@ -13,10 +13,10 @@ export class Article {
     @Column()
     content: string;
 
-    @Column()
+    @Column({ default: false })
     approved: boolean;
 
-    @Column()
+    @CreateDateColumn()
     created: Date;
 
     @ManyToOne(type => User, author => author.articles)
