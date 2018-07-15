@@ -1,8 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
-import { Article } from "../entity/Article";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity } from "typeorm";
+import { Article } from "./Article";
+import { Note } from "./Note";
 
 @Entity()
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
@@ -18,5 +19,15 @@ export class User {
 
     @OneToMany(type => Article, article => article.author)
     articles: Article[];
+
+    @OneToMany(type => Note, note => note.author)
+    notes: Note[];
+
+    static getArticles(id: number) {
+        return this.createQueryBuilder("user")
+            .leftJoinAndSelect("user.articles", "article")
+            .where("user.id = :id", { id })
+            .getOne();
+    }
 
 }

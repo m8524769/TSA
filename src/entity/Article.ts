@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn } from "typeorm";
-import { User } from "../entity/User";
+import { User } from "./User";
 
 @Entity()
 export class Article {
