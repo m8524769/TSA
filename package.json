@@ -8,6 +8,7 @@
         "typescript": "^2.9.2"
     },
     "dependencies": {
+        "axios": "^0.18.0",
         "koa": "^2.5.1",
         "koa-bodyparser": "^4.2.1",
         "koa-router": "^7.4.0",
