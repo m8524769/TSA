@@ -5,7 +5,7 @@ import { Article } from "../entity/Article";
 
 export class ArticleController {
 
-    public router: Router;
+    router: Router;
     private article: Repository<Article>;
 
     constructor() {

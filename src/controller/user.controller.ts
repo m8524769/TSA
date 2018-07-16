@@ -5,7 +5,7 @@ import { User } from "../entity/User";
 
 export class UserController {
 
-    public router: Router;
+    router: Router;
     private user: Repository<User>;
 
     constructor() {
@@ -29,10 +29,7 @@ export class UserController {
             })
 
             .get("/:id/articles", async (ctx: Context) => {
-                ctx.body = await this.user.findOneOrFail({
-                    where: {
-                        id: ctx.id
-                    },
+                ctx.body = await this.user.findOneOrFail(ctx.id, {
                     relations: ["articles"],
                 }).then(user => user.articles)
                     .catch(error => error);

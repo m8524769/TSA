@@ -25,10 +25,9 @@ export class NoteController {
             .post("/", async (ctx: Context) => {
                 const request = ctx.request.body;
                 ctx.body = await this.GistService.create(request.gist).then(response => {
-                    // console.log(response.gistId);
                     return this.note.save(
                         this.note.create({
-                            gistId: response.gistId,
+                            gistId: response,
                             description: request.gist.description,
                             subject: request.subject,
                             author: request.author,
