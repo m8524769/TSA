@@ -1,26 +1,22 @@
 import axios from 'axios';
 axios.defaults.baseURL = "https://api.github.com/gists";
-axios.defaults.headers.common['Authorization'] = "token ed9cd01b452acbaf0203494964a7fbd5d11ecd77";
+axios.defaults.headers.common['Authorization'] = "token 7e980c618099b8577f6d0229e296627d68c7f568";
 
 export class GistService {
 
     create(gist: Object): Promise<any> {
-        return axios.post('/', gist).then(response => {
-            gistId: response.data.id
-        }).catch(error => {
-            throw {
-                message: 'Parameter value is invalid',
-            }
+        return axios.post('', gist).then(response =>
+            response.data.id
+        ).catch(error => {
+            throw error.response.data
         });
     }
 
     get(id: string): Promise<any> {
-        return axios.get(`/${id}`).then(response =>
+        return axios.get(`${id}`).then(response =>
             response.data.files
         ).catch(error => {
-            throw {
-                message: 'Not Found',
-            }
+            throw error.response.data
         });
     }
 
