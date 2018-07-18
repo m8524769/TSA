@@ -1,6 +1,6 @@
 import * as Router from "koa-router";
 import { Context } from "koa";
-import { getManager, Repository } from "typeorm";
+import { getManager, Repository, Like } from "typeorm";
 import { Note } from "../entity/Note";
 import { GistService } from "../service/gist.service";
 
@@ -33,6 +33,20 @@ export class NoteController {
                             author: request.author,
                         })
                     )
+                }).catch(error => error);
+            })
+
+            .get("/public", async (ctx: Context) => {
+                ctx.body = await this.note.find()
+                    .catch(error => error);
+            })
+
+            .get("/search", async (ctx: Context) => {
+                const keyword = ctx.request.query.keyword;
+                ctx.body = await this.note.find({
+                    where: {
+                        description: Like(`%${keyword}%`)
+                    }
                 }).catch(error => error);
             })
 

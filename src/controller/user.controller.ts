@@ -35,7 +35,24 @@ export class UserController {
                     .catch(error => error);
             })
 
-            .post("/add", async (ctx: Context) => {
+            .get("/:id/notes", async (ctx: Context) => {
+                ctx.body = await this.user.findOneOrFail(ctx.id, {
+                    relations: ["notes"],
+                }).then(user => user.notes)
+                    .catch(error => error);
+            })
+
+            .post("/login", async (ctx: Context) => {
+                ctx.body = await this.user.findOneOrFail({
+                    where: {
+                        email: ctx.request.body.email,
+                        password: ctx.request.body.password
+                    }
+                }).then(user => user)
+                    .catch(error => ctx.throw(401, '邮箱或密码错误'));
+            })
+
+            .post("/register", async (ctx: Context) => {
                 ctx.body = await this.user.save(
                     this.user.create(ctx.request.body)
                 ).catch(error => error);
