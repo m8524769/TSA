@@ -1,6 +1,6 @@
 import axios from 'axios';
 axios.defaults.baseURL = "https://api.github.com/gists";
-axios.defaults.headers.common['Authorization'] = "token e6a3c02cb4a61eca0d5a144e5c19b6e59eced16a";
+axios.defaults.headers.common['Authorization'] = "token 61a473363cfcb5f520278417b8f9fc8cb1727e14";
 
 export class GistService {
 
