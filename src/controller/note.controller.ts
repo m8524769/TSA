@@ -22,23 +22,12 @@ export class NoteController {
                 return next();
             })
 
-            .post("/", async (ctx: Context) => {
-                const request = ctx.request.body;
-                ctx.body = await this.GistService.create(request.gist).then(response => {
-                    return this.note.save(
-                        this.note.create({
-                            gistId: response,
-                            description: request.gist.description,
-                            subject: request.subject,
-                            author: request.author,
-                        })
-                    )
-                }).catch(error => error);
-            })
-
             .get("/public", async (ctx: Context) => {
-                ctx.body = await this.note.find()
-                    .catch(error => error);
+                ctx.body = await this.note.find({
+                    order: {
+                        gistId: "ASC"
+                    },
+                }).catch(error => error);
             })
 
             .get("/search", async (ctx: Context) => {
@@ -51,8 +40,44 @@ export class NoteController {
             })
 
             .get("/:id", async (ctx: Context) => {
-                ctx.body = await this.GistService.get(ctx.id)
+                ctx.body = await this.GistService.getPage(ctx.id)
                     .catch(error => error);
+            })
+
+            .get("/:id/information", async (ctx: Context) => {
+                ctx.body = await this.note.findOneOrFail(ctx.id)
+                    .catch(error => error);
+            })
+
+            .get("/:id/content", async (ctx: Context) => {
+                ctx.body = await this.GistService.getContent(ctx.id)
+                    .catch(error => error);
+            })
+
+            .patch("/:id", async (ctx: Context) => {
+                const request = ctx.request.body;
+                ctx.body = await this.GistService.modify(
+                    ctx.id, request.description, request.files
+                ).then(() => {
+                    return this.note.update(ctx.id, {
+                        description: request.description,
+                        subject: request.subject
+                    })
+                }).catch(error => error);
+            })
+
+            .post("/", async (ctx: Context) => {
+                const request = ctx.request.body;
+                ctx.body = await this.GistService.create(request.gist).then(response => {
+                    return this.note.save(
+                        this.note.create({
+                            gistId: response,
+                            description: request.gist.description,
+                            subject: request.subject,
+                            author: request.author,
+                        })
+                    )
+                }).catch(error => error);
             })
 
             // .put("/:id/star", async (ctx: Context) => {
