@@ -20,26 +20,28 @@ export class UserController {
             })
 
             .get("/", async (ctx: Context) => {
-                ctx.body = await this.user.find();
+                ctx.body = await this.user.find({
+                    select: ["email", "nickname"]
+                });
             })
 
             .get("/:id", async (ctx: Context) => {
                 ctx.body = await this.user.findOneOrFail(ctx.id)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .get("/:id/articles", async (ctx: Context) => {
                 ctx.body = await this.user.findOneOrFail(ctx.id, {
                     relations: ["articles"],
                 }).then(user => user.articles)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .get("/:id/notes", async (ctx: Context) => {
                 ctx.body = await this.user.findOneOrFail(ctx.id, {
                     relations: ["notes"],
                 }).then(user => user.notes)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .post("/login", async (ctx: Context) => {
@@ -49,13 +51,13 @@ export class UserController {
                         password: ctx.request.body.password
                     }
                 }).then(user => user)
-                    .catch(error => ctx.throw(401, '邮箱或密码错误'));
+                    .catch(error => ctx.throw(401));
             })
 
             .post("/register", async (ctx: Context) => {
                 ctx.body = await this.user.save(
                     this.user.create(ctx.request.body)
-                ).catch(error => error);
+                ).catch(error => ctx.throw(409));
             })
 
     }

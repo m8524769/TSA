@@ -41,17 +41,17 @@ export class NoteController {
 
             .get("/:id", async (ctx: Context) => {
                 ctx.body = await this.GistService.getPage(ctx.id)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .get("/:id/information", async (ctx: Context) => {
                 ctx.body = await this.note.findOneOrFail(ctx.id)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .get("/:id/content", async (ctx: Context) => {
                 ctx.body = await this.GistService.getContent(ctx.id)
-                    .catch(error => error);
+                    .catch(error => ctx.throw(404));
             })
 
             .patch("/:id", async (ctx: Context) => {
@@ -63,7 +63,7 @@ export class NoteController {
                         description: request.description,
                         subject: request.subject
                     })
-                }).catch(error => error);
+                }).catch(error => ctx.throw(404));
             })
 
             .post("/", async (ctx: Context) => {
