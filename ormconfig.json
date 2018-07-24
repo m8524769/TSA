@@ -1,7 +1,7 @@
 {
     "type": "postgres",
-    "host": "rm-bp1984h9518re47l9uo.pg.rds.aliyuncs.com",
-    "port": 3432,
+    "host": "106.14.183.168",
+    "port": 5432,
     "username": "zhd",
     "password": "Zhd_0825",
     "database": "zhdb",
