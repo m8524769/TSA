@@ -1,6 +1,6 @@
 import axios from 'axios';
 axios.defaults.baseURL = "https://api.github.com/gists";
-axios.defaults.headers.common['Authorization'] = "token";
+axios.defaults.headers.common['Authorization'] = "token c1a02f69ab5254fdc8f2c9aaba1643543c681ec1";
 
 export class GistService {
 
@@ -33,6 +33,12 @@ export class GistService {
         return axios.get(`${id}`).then(response =>
             response.data.files['note.md']
         ).catch(error => {
+            throw error;
+        });
+    }
+
+    delete(id: string): Promise<any> {
+        return axios.delete(`${id}`).catch(error => {
             throw error;
         });
     }

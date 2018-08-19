@@ -1,4 +1,5 @@
 import * as Router from "koa-router";
+import * as passport from "koa-passport";
 import { Context } from "koa";
 import { getManager, Repository } from "typeorm";
 import { User } from "../entity/User";
@@ -26,8 +27,11 @@ export class UserController {
             })
 
             .get("/:id", async (ctx: Context) => {
-                ctx.body = await this.user.findOneOrFail(ctx.id)
-                    .catch(error => ctx.throw(404));
+                if (ctx.isAuthenticated() && ctx.id == ctx.session.passport.user) {
+                    ctx.body = ctx.state.user;
+                } else {
+                    ctx.throw(401);
+                }
             })
 
             .get("/:id/articles", async (ctx: Context) => {
@@ -44,21 +48,21 @@ export class UserController {
                     .catch(error => ctx.throw(404));
             })
 
-            .post("/login", async (ctx: Context) => {
-                ctx.body = await this.user.findOneOrFail({
-                    where: {
-                        email: ctx.request.body.email,
-                        password: ctx.request.body.password
-                    }
-                }).then(user => user)
-                    .catch(error => ctx.throw(401));
-            })
+            // .post("/login", async (ctx: Context) => {
+            //     ctx.body = await this.user.findOneOrFail({
+            //         where: {
+            //             email: ctx.request.body.email,
+            //             password: ctx.request.body.password
+            //         }
+            //     }).then(() => true)
+            //         .catch(error => ctx.throw(401));
+            // })
 
-            .post("/register", async (ctx: Context) => {
-                ctx.body = await this.user.save(
-                    this.user.create(ctx.request.body)
-                ).catch(error => ctx.throw(409));
-            })
+            // .post("/register", async (ctx: Context) => {
+            //     ctx.body = await this.user.save(
+            //         this.user.create(ctx.request.body)
+            //     ).catch(error => ctx.throw(409));
+            // })
 
     }
 

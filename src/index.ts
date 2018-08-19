@@ -4,6 +4,7 @@ import * as Koa from "koa";
 import * as Router from "koa-router";
 import * as serve from "koa-static";
 import * as session from "koa-session";
+import * as passport from "koa-passport";
 import * as bodyParser from "koa-bodyparser";
 import { AppRoutes } from "./routes";
 
@@ -24,11 +25,23 @@ createConnection().then(async connection => {
         console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
     });
 
+    // Static file serving
+    app.use(serve(`${__dirname}/static`));
+
+    // Session
+    app.keys = ['session_id'];
+    app.use(session({}, app));
+
+    // Passport
+    require('./auth');
+    app.use(passport.initialize());
+    app.use(passport.session());
+
     // Router: Use /api/<routerName> to connect back-end
     const router = new Router();
 
     AppRoutes.forEach(route => {
-        const controller = new route.controller();
+        let controller = new route.controller();
         router.use(`/api/${route.path}`,
             controller.router.routes(),
             controller.router.allowedMethods()
@@ -37,15 +50,9 @@ createConnection().then(async connection => {
     });
     app.use(router.routes()).use(router.allowedMethods());
 
-    // Static file serving
-    app.use(serve(`${__dirname}/static`));
-
-    // Session
-    app.use(session(app));
-
-    const port = 3000;
+    const port = process.env.PORT || 3000;
     app.listen(port, () => {
-        console.log(`Server listening on localhost:${port}.`);
+        console.log(`Server listening on localhost:${port}`);
     });
 
 }).catch(error => console.error(error));
