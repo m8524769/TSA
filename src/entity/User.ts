@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, BaseEntity } from "typeorm";
 import { Article } from "./Article";
 import { Note } from "./Note";
+import { Knowledge } from "./Knowledge";
 
 @Entity()
 export class User extends BaseEntity {
@@ -22,6 +23,9 @@ export class User extends BaseEntity {
 
     @OneToMany(type => Note, note => note.author)
     notes: Note[];
+
+    @OneToMany(type => Knowledge, knowledge => knowledge.author)
+    knowledge: Knowledge[];
 
     static getArticles(id: number) {
         return this.createQueryBuilder("user")

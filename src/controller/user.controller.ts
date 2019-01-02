@@ -48,6 +48,13 @@ export class UserController {
                     .catch(error => ctx.throw(404));
             })
 
+            .get("/:id/knowledge", async (ctx: Context) => {
+                ctx.body = await this.user.findOneOrFail(ctx.id, {
+                    relations: ["knowledge"],
+                }).then(user => user.knowledge)
+                    .catch(error => ctx.throw(404));
+            })
+
             // .post("/login", async (ctx: Context) => {
             //     ctx.body = await this.user.findOneOrFail({
             //         where: {

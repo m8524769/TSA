@@ -24,7 +24,10 @@ export class AuthController {
             .post("/login", (ctx: Context) => {
                 return passport.authenticate('local', (error, user, info) => {
                     if (user) {
-                        ctx.body = { success: true };
+                        ctx.body = {
+                            id: user.id,
+                            nickname: user.nickname,
+                        };
                         return ctx.login(user);
                     } else {
                         ctx.throw(401, info);
